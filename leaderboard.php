@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Leaderboard for Gaming Events
  * Description: A modern looking scoreboard for gaming events with Guest and Crew modes.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Ulrich Dahl <ulrich.dahl@gmail.com>
  * Tool: Opencode, LM Studio, google/gemma-4-26b-a4b
  * Text Domain: leaderboard
@@ -556,6 +556,24 @@ class LeaderboardPlugin {
 
         .lb-btn:hover { background: #00ffff; color: #000; box-shadow: 0 0 15px #00ffff; }
         .lb-edit-btn { padding: 4px 8px; font-size: 12px; background: #eee; color: #333; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; }
+        @media screen and (max-width: 600px) {
+            .lb-title {
+                font-size: 4rem !important;
+            }
+            .lb-subtitle {
+                font-size: 5rem !important;
+            }
+            .lb-container {
+                padding: 15px;
+            }
+            .lb-table th, .lb-table td {
+                padding: 5px;
+                font-size: 1.2rem;
+            }
+            .lb-table {
+                border-spacing: 0 5px;
+            }
+        }
         </style>
         <div class="lb-container" data-event_id="<?php echo $event->id; ?>" data-guest="<?php echo $guestId;?>" data-registration="<?php echo (($token===''&&!isset($_SESSION['lb_crew']))?0:1);?>">
         <button id="lb-maximize-btn" class="lb-max-btn">⛶</button>
