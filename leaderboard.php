@@ -334,6 +334,9 @@ class LeaderboardPlugin {
 
     public function render_shortcode($atts) {
         global $wpdb;
+        $locale = get_locale();
+        $short_locale = explode( '_', $locale )[0];
+
         $atts = shortcode_atts(array('event' => '', 'hide_blocks' => ''), $atts);
         $event_name = sanitize_text_field($atts['event']);
         $hide_blocks = explode(',', sanitize_text_field($atts['hide_blocks']));
@@ -644,7 +647,7 @@ class LeaderboardPlugin {
                     const eventId = container.dataset.event_id;
                     if (!eventId) return;
 
-                        moment.locale('en');
+                    moment.locale('<?php echo $short_locale; ?>');
                     const endTime = document.getElementById('lb-end-time');
 
                     const url = new URL(window.location.href);
@@ -656,7 +659,6 @@ class LeaderboardPlugin {
                     fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                    moment.locale('en');
                         const tbody = document.querySelector('.lb-table tbody');
                         if (tbody) {
                             let html = '';
