@@ -32,6 +32,10 @@ class LeaderboardPlugin {
         add_action('init', array($this, 'handle_form_post'));
         add_action('init', array($this, 'handle_export'));
 
+        add_action('plugins_loaded', array($this, 'load_textdomain'));
+    }
+
+    public function load_textdomain() {
         load_plugin_textdomain( 'leaderboard', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
     }
 
