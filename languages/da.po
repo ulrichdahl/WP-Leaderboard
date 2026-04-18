@@ -1,0 +1,114 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: leaderboard 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Report-FGCD-To: \n"
+"POT-Creation-Date: 2026-04-18 00:00+0000\n"
+"PO-Revision-Date: 2026-04-18 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Danish\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 2 : 3);\n"
+"X-Generator: poedit 3.0\n"
+
+msgid "Event created successfully!"
+msgstr "Event oprettet med succes!"
+
+msgid "Event updated successfully!"
+msgstr "Event opdateret med succes!"
+
+msgid "Crew member created successfully!"
+msgstr "Holdmedlem oprettet med succes!"
+
+msgid "Leaderboard Management"
+msgstr "Administrer Leaderboard"
+
+msgid "Edit Event"
+msgstr "Rediger Event"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "End DateTime"
+msgstr "Sluttidspunkt"
+
+msgid "Create New Event"
+msgstr "Opret nyt event"
+
+msgid "Add Crew Member"
+msgstr "Tilføj holdmedlem"
+
+msgid "Event"
+msgstr "Event"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Code"
+msgstr "Kode"
+
+msgid "Events"
+msgstr "Events"
+
+msgid "Guest Registration"
+msgstr "Gæsteregistrering"
+
+msgid "Crew Login"
+msgstr "Hold-login"
+
+msgid "Crew Logout"
+msgstr "Log ud af hold"
+
+msgid "Handle"
+msgstr "Handle"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Time"
+msgstr "Tid"
+
+msgid "Actions"
+msgstr "Handlinger"
+
+msgid "Loading..."
+msgstr "Indlæser..."
+
+msgid "Full Name"
+msgstr "Fulde navn"
+
+msgid "Gaming Handle"
+msgstr "Gaming Handle"
+
+msgid "Email Address"
+msgstr "E-mail adresse"
+
+msgid "Join Event"
+msgstr "Deltag i event"
+
+msgid "Next contender"
+msgstr "Næste deltager"
+
+msgid "Crew Name"
+msgstr "Holdnavn"
+
+msgid "Crew Code"
+msgstr "Holdkode"
+
+msgid "Login"
+msgstr "Log ind"
+
+msgid "No scores yet"
+msgstr "Ingen scores endnu"
+
+msgid "Winner is: "
+msgstr "Vinderen er: "
+
+msgid "This round ends "
+msgstr "Denne runde slutter "
