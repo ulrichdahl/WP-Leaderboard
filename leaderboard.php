@@ -1,11 +1,14 @@
 <?php
 /**
  * Plugin Name: Leaderboard for Gaming Events
- * Description: A modern looking scoreboard for gaming events with Guest and Crew modes.
+ * Plugin URI: https://github.com/ulrichdahl/WP-Leaderboard
+ * Description: A retro looking scoreboard for gaming events with Guest and Crew modes.
  * Version: 1.1.1
  * Author: Ulrich Dahl <ulrich.dahl@gmail.com>
+ * Author URI: https://github.com/ulrichdahl/
  * Tool: Opencode, LM Studio, google/gemma-4-26b-a4b
  * Text Domain: leaderboard
+ * License: GPL3
  */
 
 if (!defined('ABSPATH')) exit;
@@ -89,38 +92,38 @@ class LeaderboardPlugin {
             PRIMARY KEY  (id)
             ) $charset_collate;
 
-            CREATE TABLE $this->table_participants (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                event_id mediumint(9) NOT NULL,
-                name varchar(255) NOT NULL,
-                handle varchar(255) NOT NULL,
-                email varchar(255) NOT NULL,
-                score float DEFAULT NULL,
-                score_time datetime DEFAULT NULL,
-                PRIMARY KEY  (id),
-                KEY event_id (event_id)
-                ) $charset_collate;
+        CREATE TABLE $this->table_participants (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            event_id mediumint(9) NOT NULL,
+            name varchar(255) NOT NULL,
+            handle varchar(255) NOT NULL,
+            email varchar(255) NOT NULL,
+            score float DEFAULT NULL,
+            score_time datetime DEFAULT NULL,
+            PRIMARY KEY  (id),
+            KEY event_id (event_id)
+            ) $charset_collate;
 
-                CREATE TABLE $this->table_crew (
-                    id mediumint(9) NOT NULL AUTO_INCREMENT,
-                    event_id mediumint(9) NOT NULL,
-                    name varchar(255) NOT NULL,
-                    code varchar(64) NOT NULL,
-                    PRIMARY KEY  (id),
-                    KEY event_id (event_id)
-                    ) $charset_collate;
+        CREATE TABLE $this->table_crew (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            event_id mediumint(9) NOT NULL,
+            name varchar(255) NOT NULL,
+            code varchar(64) NOT NULL,
+            PRIMARY KEY  (id),
+            KEY event_id (event_id)
+            ) $charset_collate;
 
-                    CREATE TABLE $this->table_logs (
-                        id mediumint(9) NOT NULL AUTO_INCREMENT,
-                        event_id mediumint(9) NOT NULL,
-                        participant_id mediumint(9) NOT NULL,
-                        crew_id mediumint(9) NOT NULL,
-                        field varchar(50) NOT NULL,
-                        old_value text,
-                        new_value text,
-                        change_time datetime NOT NULL,
-                        PRIMARY KEY  (id)
-                        ) $charset_collate;";
+        CREATE TABLE $this->table_logs (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            event_id mediumint(9) NOT NULL,
+            participant_id mediumint(9) NOT NULL,
+            crew_id mediumint(9) NOT NULL,
+            field varchar(50) NOT NULL,
+            old_value text,
+            new_value text,
+            change_time datetime NOT NULL,
+            PRIMARY KEY  (id)
+            ) $charset_collate;";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
@@ -533,9 +536,9 @@ class LeaderboardPlugin {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
-            background: #000;
+            background: #000 !important;
             border: 2px solid #00ffff !important;
-            color: #00ffff !important;
+            color: #39ff14 !important;
             font-size: 1.2rem !important;
             font-weight: bold !important;
             text-transform: uppercase !important;
@@ -552,6 +555,15 @@ class LeaderboardPlugin {
             box-shadow: 0 0 10px #ff00ff;
             margin: 24px 0;
             font-family: 'VT323', monospace !important;
+            min-width: 100px !important;
+            width: fit-content !important;
+        }
+        .lb-primary {
+            background: #39ff14 !important;
+            color: #051702 !important;
+        }
+        .lb-cancel {
+            background: #ff0f4f !important;
         }
 
         .lb-btn:hover { background: #00ffff; color: #000; box-shadow: 0 0 15px #00ffff; }
@@ -586,63 +598,60 @@ class LeaderboardPlugin {
         <p class="lb-<?php echo $msg[0];?>"><?php echo $msg[1];?></p>
         <?php endforeach;?>
         <?php if ($token === $event->guest_token): ?>
-        <div class="lb-form">
-        <h3 class="wrap"><?php echo esc_html__('Guest Registration', 'leaderboard'); ?></h3>
-        <form method="post" action="">
-        <?php if (empty($_SESSION['lb_guest_success'])) {?>
-            <?php echo $wp_nonce; ?>
-            <input type="hidden" name="lb_event_id" value="<?php echo $event->id; ?>">
-            <input type="hidden" name="lb_token" value="<?php echo $token; ?>">
-            <input type="text" name="lb_name" placeholder="<?php echo esc_attr__('Full Name', 'leaderboard'); ?>" class="lb-input" required>
-            <input type="text" name="lb_handle" placeholder="<?php echo esc_attr__('Gaming Handle', 'leaderboard'); ?>" class="lb-input" required>
-            <input type="email" name="lb_email" placeholder="<?php echo esc_attr__('Email Address', 'leaderboard'); ?>" class="lb-input" required>
-            <input type="submit" name="lb_guest_submit" value="<?php echo esc_attr__('Join Event', 'leaderboard'); ?>" class="lb-btn">
-            <?php } else { ?>
-                <?php echo $wp_nonce; ?>
-                <input type="submit" name="lb_guest_next" value="<?php echo esc_attr__('Next contender', 'leaderboard'); ?>" class="lb-btn">
-                <?php }?>
-                </form>
-                </div>
-                <?php elseif ($token === $event->crew_token): ?>
-                <?php if (!isset($_SESSION['lb_crew'])): ?>
-                <div class="lb-form">
-                <h3 class="wrap"><?php echo esc_html__('Crew Login', 'leaderboard'); ?></h3>
-                <form method="post" action="<?php echo get_permalink(); ?>">
+            <div class="lb-form">
+            <h3 class="wrap"><?php echo esc_html__('Guest Registration', 'leaderboard'); ?></h3>
+            <form method="post" action="">
+            <?php if (empty($_SESSION['lb_guest_success'])) {?>
                 <?php echo $wp_nonce; ?>
                 <input type="hidden" name="lb_event_id" value="<?php echo $event->id; ?>">
                 <input type="hidden" name="lb_token" value="<?php echo $token; ?>">
-                <input type="text" name="lb_crew_name" placeholder="<?php echo esc_attr__('Crew Name', 'leaderboard'); ?>" class="lb-input" required>
-                <input type="password" name="lb_crew_code" placeholder="<?php echo esc_attr__('Crew Code', 'leaderboard'); ?>" class="lb-input" required>
-                <input type="submit" name="lb_crew_login" value="<?php echo esc_attr__('Login', 'leaderboard'); ?>" class="lb-btn">
+                <input type="text" name="lb_name" placeholder="<?php echo esc_attr__('Full Name', 'leaderboard'); ?>" class="lb-input" required>
+                <input type="text" name="lb_handle" placeholder="<?php echo esc_attr__('Gaming Handle', 'leaderboard'); ?>" class="lb-input" required>
+                <input type="email" name="lb_email" placeholder="<?php echo esc_attr__('Email Address', 'leaderboard'); ?>" class="lb-input" required>
+                <input type="submit" name="lb_guest_submit" value="<?php echo esc_attr__('Join Event', 'leaderboard'); ?>" class="lb-btn lb-primary">
+            <?php } else { ?>
+                <?php echo $wp_nonce; ?>
+                <input type="submit" name="lb_guest_next" value="<?php echo esc_attr__('Next contender', 'leaderboard'); ?>" class="lb-btn">
+            <?php }?>
                 </form>
                 </div>
-                <?php endif; ?>
-                <?php elseif(isset($_SESSION['lb_crew'])): ?>
-                <p style="text-align:right;"><a href="?lb_logout=1" class="lb-edit-btn"><?php echo esc_html__('Crew Logout', 'leaderboard'); ?></a></p>
-                <div class="lb-admin-panel">
-                <?php
-                if (isset($_GET['edit_id'])) {
-                    $pid = intval($_GET['edit_id']);
-                    $p_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table_participants WHERE id = %d", $pid));
-                    ?>
-                    <div class="lb-form">
-                    <form method="post" action="<?php echo get_permalink(); ?>">
+        <?php elseif ($token === $event->crew_token && !isset($_SESSION['lb_crew'])): ?>
+            <div class="lb-form">
+            <h3 class="wrap"><?php echo esc_html__('Crew Login', 'leaderboard'); ?></h3>
+            <form method="post" action="<?php echo get_permalink(); ?>">
+            <?php echo $wp_nonce; ?>
+            <input type="hidden" name="lb_event_id" value="<?php echo $event->id; ?>">
+            <input type="hidden" name="lb_token" value="<?php echo $token; ?>">
+            <input type="text" name="lb_crew_name" placeholder="<?php echo esc_attr__('Crew Name', 'leaderboard'); ?>" class="lb-input" required>
+            <input type="password" name="lb_crew_code" placeholder="<?php echo esc_attr__('Crew Code', 'leaderboard'); ?>" class="lb-input" required>
+            <input type="submit" name="lb_crew_login" value="<?php echo esc_attr__('Login', 'leaderboard'); ?>" class="lb-btn lb-primary">
+            </form>
+            </div>
+        <?php elseif(isset($_SESSION['lb_crew'])): ?>
+            <p style="text-align:right;"><a href="?lb_logout=1" class="lb-edit-btn"><?php echo esc_html__('Crew Logout', 'leaderboard'); ?></a></p>
+            <div class="lb-admin-panel">
+            <?php
+            if (isset($_GET['edit_id'])) {
+                $pid = intval($_GET['edit_id']);
+                $p_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table_participants WHERE id = %d", $pid));
+                ?>
+                <div class="lb-form">
+                <form method="post" action="<?php echo get_permalink(); ?>">
                     <?php echo $wp_nonce; ?>
                     <input type="hidden" name="lb_participant_id" value="<?php echo $pid; ?>">
                     <input type="text" name="lb_name" value="<?php echo esc_attr($p_data->name); ?>" class="lb-input" required>
                     <input type="text" name="lb_handle" value="<?php echo esc_attr($p_data->handle); ?>" class="lb-input" required>
                     <input type="email" name="lb_email" value="<?php echo esc_attr($p_data->email); ?>" class="lb-input" required>
                     <input type="number" step="1" name="lb_score" value="<?php echo esc_attr($p_data->score); ?>" class="lb-input">
-                    <input type="submit" name="lb_crew_update" value="<?php echo esc_attr__('Save Changes', 'leaderboard'); ?>" class="lb-btn">
-                    <input type="back" name="lb_crew_cancel" value="<?php echo esc_attr__('Cancel', 'leaderboard'); ?>" class="lb-btn">
-                    </form>
+                    <div style="display: flex;justify-content: space-around;">
+                        <input type="submit" name="lb_crew_update" value="<?php echo esc_attr__('Save Changes', 'leaderboard'); ?>" class="lb-btn lb-primary">
+                        <button class="lb-btn lb-cancel" onclick="window.history.back()"><?php echo esc_attr__('Cancel', 'leaderboard'); ?></button>
                     </div>
-                    <?php
-                }
-                ?>
+                </form>
                 </div>
-                <?php endif; ?>
-
+            <?php } ?>
+            </div>
+        <?php endif; ?>
                 <table class="lb-table">
                 <thead>
                 <tr>
@@ -756,7 +765,7 @@ class LeaderboardPlugin {
         if (isset($_GET['lb_ajax_scores'])) {
             header("Content-Type: application/json; charset=utf-8");
             $scores = $wpdb->get_results($wpdb->prepare(
-                "SELECT * FROM $this->table_participants WHERE event_id = %d ORDER BY score DESC, score_time ASC",
+                "SELECT id,handle,score,score_time FROM $this->table_participants WHERE event_id = %d ORDER BY score DESC, score_time ASC",
                 $_GET['lb_ajax_scores']
             ));
             echo json_encode($scores);
@@ -815,11 +824,14 @@ class LeaderboardPlugin {
                 $this->messages[] = ['error', 'The event was not found!'];
             }
             skip_guest:
+            wp_safe_redirect(add_query_arg($_GET, get_permalink()));
+            return;
         }
 
         if (isset($_POST['lb_guest_next'])) {
             unset($_SESSION['lb_guest_success']);
             wp_safe_redirect(add_query_arg($_GET, get_permalink()));
+            return;
         }
 
         if (isset($_POST['lb_crew_login'])) {
@@ -862,6 +874,8 @@ class LeaderboardPlugin {
                 $this->messages[] = ['error', 'Invalid credentials.'];
             }
             skip_crew_login:
+            wp_safe_redirect(add_query_arg($_GET, get_permalink()));
+            return;
         }
 
         // Crew update handling
