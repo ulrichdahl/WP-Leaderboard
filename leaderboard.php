@@ -3,7 +3,7 @@
  * Plugin Name: Leaderboard for Gaming Events
  * Plugin URI: https://github.com/ulrichdahl/WP-Leaderboard
  * Description: A retro looking scoreboard for gaming events with Guest and Crew modes.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Ulrich Dahl <ulrich.dahl@gmail.com>
  * Author URI: https://github.com/ulrichdahl/
  * Tool: Opencode, LM Studio, google/gemma-4-26b-a4b
@@ -46,14 +46,6 @@ class LeaderboardPlugin {
         if (isset($_GET['export_event'])) {
             $event_id = intval($_GET['export_event']);
             $this->export_scores($event_id);
-            exit;
-        }
-    }
-
-    public function handle_ajax_export() {
-        if (isset($_GET['export_event'])) {
-            $event_id = intval($_GET['export_event']);
-            $this->export_scores($event_to_id_fix_helper($event_id));
             exit;
         }
     }
@@ -276,7 +268,6 @@ class LeaderboardPlugin {
             <td><a href='?page={$_GET['page']}&edit_event={$e->id}' class='button'>Edit</a></td>
             <td><a href='?page={$_GET['page']}&delete_event={$e->id}' onClick='return confirm(\"Are you sure?\")' class='button'>DELETE</a></td>
             </tr>";
-            var_dump($guest);
         }
         echo '</tbody></table>';
 
@@ -599,7 +590,7 @@ class LeaderboardPlugin {
         <?php endforeach;?>
         <?php if ($token === $event->guest_token): ?>
             <div class="lb-form">
-            <h3 class="wrap"><?php echo esc_html__('Guest Registration', 'leaderboard'); ?></h3>
+            <h3 class="wrap"><?php echo esc_html__('Guest Registration', 'leaderboard'); ?><br/>#<?php echo (count($scores)+1);?></h3>
             <form method="post" action="">
             <?php if (empty($_SESSION['lb_guest_success'])) {?>
                 <?php echo $wp_nonce; ?>
