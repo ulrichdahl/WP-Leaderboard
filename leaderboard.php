@@ -765,9 +765,11 @@ class LeaderboardPlugin {
 
         if (isset($_GET['lb_logout'])) {
             unset($_SESSION['lb_crew']);
-            wp_safe_redirect(get_permalink());
             return;
         }
+
+        // ALL form handling below requires POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;  // ← ADD THIS
 
         if (!isset($_POST['lb_nonce_field']) || !wp_verify_nonce($_POST['lb_nonce_field'], 'lb_form_action')) {
             wp_safe_redirect(get_permalink());
